@@ -50,7 +50,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>br.ufc.great.es.tsd.mapreduce.wordcount.WordCount</mainClass>
+							<mainClass>br.ufc.great.es.tsd.mapreduce.words.WordCount</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
