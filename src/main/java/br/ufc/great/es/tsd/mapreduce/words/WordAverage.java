@@ -1,6 +1,8 @@
 package br.ufc.great.es.tsd.mapreduce.words;
 
 import java.io.IOException;
+import java.util.StringTokenizer;
+
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
@@ -9,6 +11,7 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
+import org.apache.hadoop.mapreduce.Mapper.Context;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
@@ -16,24 +19,23 @@ import org.apache.hadoop.util.GenericOptionsParser;
 public class WordAverage {
 
 	public static class TokenizerAverageMapper extends Mapper<Object, Text, Text, IntWritable>{
-		String line = new String();
-		Text firstLetter = new Text();
-		IntWritable wordLength = new IntWritable();
-
-		public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-			line = value.toString();
-
-			for (String word : line.split("\\W+")){
-				if (word.length() > 0) {
-					// ---------------------------------------------
-					// firstLetter assignment
-					firstLetter.set(String.valueOf(word.charAt(0)));
-					// ---------------------------------------------
-					wordLength.set(word.length());
-					context.write(firstLetter, wordLength);
-				}
-			}
-		}
+	    private final static IntWritable one = new IntWritable(1);
+	    private Text word = new Text();
+	      
+	    public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
+	      StringTokenizer itr = new StringTokenizer(value.toString());
+	      
+	      while (itr.hasMoreTokens()) {
+	  		String myKey = itr.nextToken();
+	  		myKey = myKey.replaceAll ( "[^A-Za-z0-9]",""); 
+	  		int myValue = myKey.length();
+	  		one.set(myValue);
+	        word.set(myKey);
+	        context.write(word, one);
+	      }
+	      
+	    }
+	    
 	}
 
 	public static class AverageWordLength extends Reducer<Text,IntWritable,Text,IntWritable> {   
