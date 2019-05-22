@@ -15,7 +15,7 @@ hadoop fs -mkdir -p input$1
 hdfs dfs -put ./input$1/* input$1
 
 # run wordcount 
-hadoop jar /root/wordcount/target/wordcount-0.0.3.jar input$1 output$1
+hadoop jar /root/words/target/words-1.0.0.jar input$1 output$1
 
 # print the input files
 echo -e "\ninput file1.txt:"
