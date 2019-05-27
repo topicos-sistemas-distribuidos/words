@@ -15,24 +15,29 @@ Faça a configuração do Cluster do Hadoop com 3 nós usando containers Docker 
 
 Obs: Inicie o hdfs e o yarn. É preciso garantir que o nó master tenha instalado o git, o maven e um editor de texto.  
 
-2. No pom.xml em <mainClass>br.ufc.great.es.tsd.mapreduce.words.WordCount</mainClass> indique a feature (WordCount, Wordlegth, ou WordAverage) que será compilada.
+2. Faça o clone desse repositório no nó master.
+```
+$ git clone https://github.com/topicos-sistemas-distribuidos/words.git
+```
 
-3. Execute um maven clean
+3. No pom.xml, na linha, <mainClass> br.ufc.great.es.tsd.mapreduce.words.WordCount </mainClass> indique a feature (WordCount, WordLegth ou WordAverage) que será compilada.
+
+4. Execute um maven clean
 ```
 $ mvn clean
 ```
 
-4. Execute um maven compile
+5. Execute um maven compile
 ```
 $mvn compile
 ```
 
-5. Execute um maven package
+6. Execute um maven package
 ```
 $mvn package
 ```
 
-6. Execute o script de acordo com a feature compilada
+7. Execute o script de acordo com a feature compilada
 ```
 $./my-wordcount.sh -count
 $./my-wordlength.sh -length
