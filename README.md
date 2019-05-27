@@ -44,7 +44,7 @@ $./my-wordlength.sh -length
 $./my-wordaverage.sh -average
 ```
 
-Obs: é preciso alterar as permissões dos scripts para que todos possam executar. Por exemplo: chmod + x my-wordcount.sh
+Obs: Os scripts precisam de permissão para executar. Por exemplo: chmod +x my-wordcount.sh
 
 Para a execução do my-wordcount.sh - O output deverá ser uma lista contendo palavra e quantas vezes ela apareceu no texto.
 
