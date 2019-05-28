@@ -13,6 +13,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>1.8</java.version>
+   <myproperty>WordCount</myproperty>
   </properties>
 
   <dependencies>
@@ -50,7 +51,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>br.ufc.great.es.tsd.mapreduce.words.WordCount</mainClass>
+							<mainClass>br.ufc.great.es.tsd.mapreduce.words.${myproperty}</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
