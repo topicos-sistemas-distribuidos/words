@@ -36,13 +36,15 @@ public class WordAverage {
 	    
 	}
 
-	public static class AverageWordLength extends Reducer<Text,IntWritable,Text,IntWritable> {   
+	public static class AverageWordLength extends Reducer<Text,IntWritable,Text,Text> {   
 		private IntWritable result = new IntWritable();
 		
 		public void reduce(Text key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
 			int sum = 0; 
 			int count = 0; 
 			int Average = 0;
+			String strAverage = String.format("%f", Average);
+			String palavra = "Tamanho medio";
 			
 			for(IntWritable val : values) {
 				sum = sum +  val.get(); 
@@ -50,8 +52,7 @@ public class WordAverage {
 			}
 			
 			Average = sum/count;
-			result.set(Average);
-			context.write(key,result);
+			context.write(new Text(palavra), new Text(strAverage));
 		}
 	}
 
