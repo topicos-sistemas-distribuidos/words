@@ -5,6 +5,7 @@ import java.util.StringTokenizer;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.FloatWritable;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
@@ -36,27 +37,37 @@ public class WordAverage {
 	    
 	}
 
-	public static class AverageWordLength extends Reducer<Text,IntWritable,Text,Text> {   
-		private IntWritable result = new IntWritable();
+	public static class AverageWordLength extends Reducer<Text,IntWritable,Text,IntWritable> {
+	      private IntWritable result = new IntWritable();
+	      
+	      public void reduce(Text key, Iterable<IntWritable> values,Context context) throws IOException, InterruptedException {
+	          int sum = 0;
+	          for (IntWritable val : values) {
+	              sum += val.get();
+	          }
+	          result.set(sum);
+	          context.write(key, result);
+	      }
+	  }
+	
+	public static class Reduce extends Reducer<Text,IntWritable,Text,FloatWritable> {
+		private FloatWritable result = new FloatWritable();
+		Float average = 0f;
+		Float count = 0f;
+		int sum = 0;
 		
 		public void reduce(Text key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
-			int sum = 0; 
-			int count = 0; 
-			float Average = 0;
-			
-			String palavra = "Tamanho medio";
-			
-			for(IntWritable val : values) {
-				sum = sum +  val.get(); 
-				count = count+1;
+			Text sumText = new Text("avegage");
+			for (IntWritable val : values) {
+				sum += val.get();
 			}
-			
-			Average = sum/count;
-			String strAverage = String.format("%f", Average);
-			context.write(new Text(palavra), new Text(strAverage));
+			count += 1;
+			average = sum/count;
+			result.set(average);
+			context.write(sumText, result);
 		}
 	}
-
+	
 	public static void main(String[] args) throws Exception {
 		Configuration conf = new Configuration();
 		String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
@@ -70,9 +81,9 @@ public class WordAverage {
 		job.setJarByClass(WordAverage.class);
 		job.setMapperClass(TokenizerAverageMapper.class);
 		job.setCombinerClass(AverageWordLength.class);
-		job.setReducerClass(AverageWordLength.class);
+		job.setReducerClass(Reduce.class);
 		job.setOutputKeyClass(Text.class);
-		job.setOutputValueClass(Text.class);
+		job.setOutputValueClass(IntWritable.class);
 
 		for (int i = 0; i < otherArgs.length - 1; ++i) {
 			FileInputFormat.addInputPath(job, new Path(otherArgs[i]));
