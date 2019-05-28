@@ -51,7 +51,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>br.ufc.great.es.tsd.mapreduce.words.${myword}</mainClass>
+							<mainClass>br.ufc.great.es.tsd.mapreduce.words.${myproperty}</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
