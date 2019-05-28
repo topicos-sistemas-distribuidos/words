@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # test the hadoop cluster by running wordcount
-mvn "-Dmyproperty=WordCount" clean && mvn compile && mvn package
+mvn "-Dmyword=WordCount" clean && mvn compile && mvn package
 
 # create input files 
 mkdir input$1
