@@ -40,12 +40,12 @@ public class WordAverage {
 		private IntWritable result = new IntWritable();
 		
 		public void reduce(Text key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
-			int sum =0; 
-			int count =0; 
-			int Average =0;
+			int sum = 0; 
+			int count = 0; 
+			int Average = 0;
 			
-			for(IntWritable val:values) {
-				sum += val.get(); 
+			for(IntWritable val : values) {
+				sum = sum +  val.get(); 
 				count = count+1;
 			}
 			
@@ -70,14 +70,13 @@ public class WordAverage {
 		job.setCombinerClass(AverageWordLength.class);
 		job.setReducerClass(AverageWordLength.class);
 		job.setOutputKeyClass(Text.class);
-		job.setOutputValueClass(IntWritable.class);
+		job.setOutputValueClass(Text.class);
 
 		for (int i = 0; i < otherArgs.length - 1; ++i) {
 			FileInputFormat.addInputPath(job, new Path(otherArgs[i]));
 		}
 
-		FileOutputFormat.setOutputPath(job,
-				new Path(otherArgs[otherArgs.length - 1]));
+		FileOutputFormat.setOutputPath(job, new Path(otherArgs[otherArgs.length - 1]));
 		System.exit(job.waitForCompletion(true) ? 0 : 1);
 	}
 }
