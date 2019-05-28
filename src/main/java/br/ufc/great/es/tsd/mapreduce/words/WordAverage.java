@@ -42,8 +42,8 @@ public class WordAverage {
 		public void reduce(Text key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
 			int sum = 0; 
 			int count = 0; 
-			int Average = 0;
-			String strAverage = String.format("%f", Average);
+			float Average = 0;
+			
 			String palavra = "Tamanho medio";
 			
 			for(IntWritable val : values) {
@@ -52,6 +52,7 @@ public class WordAverage {
 			}
 			
 			Average = sum/count;
+			String strAverage = String.format("%f", Average);
 			context.write(new Text(palavra), new Text(strAverage));
 		}
 	}
