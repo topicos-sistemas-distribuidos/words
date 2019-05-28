@@ -66,10 +66,12 @@ public class WordLength {
 	 *
 	 */
 	public static class ReduceTaskSwap extends Reducer<IntWritable, Text, IntWritable, Text> {
+		private IntWritable result = new IntWritable();
 		public void reduce(Text keyWord, Iterable<IntWritable> list, Context context) throws java.io.IOException, InterruptedException {
 			for (IntWritable valueOfWordLength : list) {
-				context.write(valueOfWordLength, keyWord);
+				result = valueOfWordLength;				
 			}
+			context.write(result, keyWord);
 		}
 	}
 
