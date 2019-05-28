@@ -6,7 +6,7 @@ mvn "-Dmyproperty=WordLength" clean && mvn compile "-Dmyproperty=WordLength" && 
 # create input files 
 mkdir input$1
 echo "My wordlength - Try $1"
-cp /root/words/books/* > input$1
+cp /root/words/books/* input$1
 
 # create input directory on HDFS
 hadoop fs -mkdir -p input$1
