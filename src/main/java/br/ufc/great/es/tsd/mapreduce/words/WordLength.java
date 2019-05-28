@@ -6,8 +6,6 @@ import java.util.StringTokenizer;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
-import org.apache.hadoop.io.LongWritable;
-import org.apache.hadoop.io.RawComparator;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.WritableComparable;
 import org.apache.hadoop.io.WritableComparator;
@@ -65,10 +63,10 @@ public class WordLength {
 	 * @author armandosoaressousa
 	 *
 	 */
-	public static class ReduceTaskSwap extends Reducer<IntWritable, Text, IntWritable, Text> {
+	public static class ReduceTaskSwap extends Reducer<Text, IntWritable, Text, IntWritable> {
 		public void reduce(Text keyWord, Iterable<IntWritable> list, Context context) throws java.io.IOException, InterruptedException {
 			for (IntWritable valueOfWordLength : list) {
-				context.write(valueOfWordLength, keyWord);
+				context.write(keyWord, valueOfWordLength);
 			}
 		}
 	}
