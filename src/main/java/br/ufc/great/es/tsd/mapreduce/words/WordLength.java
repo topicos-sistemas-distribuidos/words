@@ -27,7 +27,7 @@ public class WordLength {
 	 * @author armandosoaressousa
 	 *
 	 */
-	public static class TokenizerMapper extends Mapper<Object, Text, IntWritable, Text>{
+	public static class TokenizerMapper extends Mapper<Object, IntWritable, Text, IntWritable>{
 		private final static IntWritable oneWordLength = new IntWritable(1);
 		private Text wordKey = new Text();
 
@@ -38,16 +38,16 @@ public class WordLength {
 				String myKey = itr.nextToken();
 				myKey = myKey.replaceAll ( "[^A-Za-z0-9]",""); 
 				int myValue = myKey.length();
-				oneWordLength.set(myValue);
-				wordKey.set(myKey);
-				context.write(oneWordLength, wordKey);
+				wordKey.set(myKey); // key = palavra
+				oneWordLength.set(myValue); // value = tamanho da palavra
+				context.write(wordKey, oneWordLength); // map(key, value) = map(palavra, tamanho da palavra)
 			}
 
 		}
 
 	}
 
-	public static class IntSizeReducer extends Reducer<Text,IntWritable,Text,IntWritable> {
+	public static class SizeWordReducerTask extends Reducer<Text,IntWritable,Text,IntWritable> {
 		private IntWritable resultKey = new IntWritable();
 
 		public void reduce(Text key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
@@ -66,14 +66,10 @@ public class WordLength {
 	 *
 	 */
 	public static class ReduceTaskSwap extends Reducer<IntWritable, Text, IntWritable, Text> {
-		private IntWritable result = new IntWritable();
 		public void reduce(Text keyWord, Iterable<IntWritable> list, Context context) throws java.io.IOException, InterruptedException {
-			int size=0;
 			for (IntWritable valueOfWordLength : list) {
-				size = valueOfWordLength.get();				
+				context.write(valueOfWordLength, keyWord);
 			}
-			result.set(size);
-			context.write(result, keyWord);
 		}
 	}
 
@@ -108,12 +104,10 @@ public class WordLength {
 		Job job = Job.getInstance(conf, "word length");
 		job.setJarByClass(WordLength.class);
 		job.setMapperClass(TokenizerMapper.class);
-		job.setCombinerClass(ReduceTaskSwap.class);
-		job.setReducerClass(ReduceTaskSwap.class);
-		job.setOutputKeyClass(IntWritable.class);
-		job.setOutputValueClass(Text.class);
-
-		job.setSortComparatorClass(DescendingKeyComparator.class);
+		job.setCombinerClass(SizeWordReducerTask.class);
+		job.setReducerClass(SizeWordReducerTask.class);
+		job.setOutputKeyClass(Text.class);
+		job.setOutputValueClass(IntWritable.class);
 
 		for (int i = 0; i < otherArgs.length - 1; ++i) {
 			FileInputFormat.addInputPath(job, new Path(otherArgs[i]));
