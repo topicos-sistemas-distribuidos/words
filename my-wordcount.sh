@@ -6,8 +6,7 @@ mvn "-Dmyproperty=WordCount" clean && mvn compile "-Dmyproperty=WordCount" && mv
 # create input files 
 mkdir input$1
 echo "My wordcount - Try $1"
-echo "Hello Docker" >input$1/file2.txt
-echo "Hello Hadoop" >input$1/file1.txt
+cp /root/words/books/* > input$1
 
 # create input directory on HDFS
 hadoop fs -mkdir -p input$1
