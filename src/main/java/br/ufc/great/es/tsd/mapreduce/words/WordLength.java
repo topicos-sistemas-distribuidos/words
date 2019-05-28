@@ -104,6 +104,7 @@ public class WordLength {
 		Job job = Job.getInstance(conf, "word length");
 		job.setJarByClass(WordLength.class);
 		job.setMapperClass(TokenizerMapper.class);
+		job.setCombinerClass(ReduceTaskSwap.class);
 		job.setReducerClass(ReduceTaskSwap.class);
 		job.setOutputKeyClass(IntWritable.class);
 		job.setOutputValueClass(Text.class);
