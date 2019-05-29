@@ -37,33 +37,33 @@ public class WordAverage {
 	    
 	}
 
-	public static class AverageWordLength extends Reducer<Text,IntWritable,Text,IntWritable> {
+	public static class CheckWordLength extends Reducer<Text,IntWritable,Text,IntWritable> {
 	      private IntWritable result = new IntWritable();
 	      
 	      public void reduce(Text key, Iterable<IntWritable> values,Context context) throws IOException, InterruptedException {
-	          int sum = 0;
+	          int size = 0;
 	          for (IntWritable val : values) {
-	              sum += val.get();
+	              size = val.get();
 	          }
-	          result.set(sum);
+	          result.set(size);
 	          context.write(key, result);
 	      }
 	  }
 	
-	public static class Reduce extends Reducer<Text,IntWritable,Text,FloatWritable> {
+	public static class AverageWordSizeReduce extends Reducer<Text,IntWritable,Text,FloatWritable> {
 		private FloatWritable result = new FloatWritable();
 		Float average = 0f;
 		Float count = 0f;
 		int sum = 0;
 		
 		public void reduce(Text key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
-			Text sumText = new Text("count");
+			Text sumText = new Text("average");
 			for (IntWritable val : values) {
 				sum += val.get();
 			}
 			count += 1;
 			average = sum/count;
-			result.set(count);
+			result.set(average);
 			context.write(sumText, result);
 		}
 	}
@@ -80,8 +80,9 @@ public class WordAverage {
 		Job job = Job.getInstance(conf, "word average");
 		job.setJarByClass(WordAverage.class);
 		job.setMapperClass(TokenizerAverageMapper.class);
-		job.setCombinerClass(AverageWordLength.class);
-		job.setReducerClass(Reduce.class);
+		job.setCombinerClass(CheckWordLength.class);
+		job.setReducerClass(CheckWordLength.class);
+		job.setReducerClass(AverageWordSizeReduce.class);
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(IntWritable.class);
 
