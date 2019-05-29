@@ -57,13 +57,13 @@ public class WordAverage {
 		int sum = 0;
 		
 		public void reduce(Text key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
-			Text sumText = new Text("avegage");
+			Text sumText = new Text("count");
 			for (IntWritable val : values) {
 				sum += val.get();
 			}
 			count += 1;
 			average = sum/count;
-			result.set(average);
+			result.set(count);
 			context.write(sumText, result);
 		}
 	}
