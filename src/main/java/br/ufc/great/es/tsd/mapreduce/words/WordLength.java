@@ -36,7 +36,7 @@ public class WordLength {
 	    
 	  }
 	  
-	  public static class IntSizeReducer extends Reducer<Text,IntWritable,Text,IntWritable> {
+	  public static class WordSizeReducerTask extends Reducer<Text,IntWritable,Text,IntWritable> {
 	    private IntWritable result = new IntWritable();
 
 	    public void reduce(Text key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
@@ -59,8 +59,8 @@ public class WordLength {
 	    Job job = Job.getInstance(conf, "word count");
 	    job.setJarByClass(WordLength.class);
 	    job.setMapperClass(TokenizerMapper.class);
-	    job.setCombinerClass(IntSizeReducer.class);
-	    job.setReducerClass(IntSizeReducer.class);
+	    job.setCombinerClass(WordSizeReducerTask.class);
+	    job.setReducerClass(WordSizeReducerTask.class);
 	    job.setOutputKeyClass(Text.class);
 	    job.setOutputValueClass(IntWritable.class);
 	    for (int i = 0; i < otherArgs.length - 1; ++i) {
