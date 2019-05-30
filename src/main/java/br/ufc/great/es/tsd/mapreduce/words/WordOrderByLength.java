@@ -45,7 +45,7 @@ public class WordOrderByLength {
 		job.setMapOutputKeyClass(MyWord.class);
 		job.setMapOutputValueClass(IntWritable.class);
 
-		job.setOutputKeyClass(Text.class);
+		job.setOutputKeyClass(MyWord.class);
 		job.setOutputValueClass(IntWritable.class);
 
 		job.setPartitionerClass(WordPartitioner.class);
