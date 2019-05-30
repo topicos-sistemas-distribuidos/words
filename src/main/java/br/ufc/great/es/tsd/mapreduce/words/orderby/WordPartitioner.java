@@ -9,7 +9,7 @@ public class WordPartitioner extends Partitioner<MyWord, IntWritable>{
 	@Override
 	public int getPartition(MyWord key, IntWritable value, int nuOfReducers) {
 		// TODO Auto-generated method stub
-		return (key.getLsize().hashCode() % nuOfReducers);
+		return (key.getLsize().get() % nuOfReducers);
 	}
 
 }

@@ -3,6 +3,7 @@ package br.ufc.great.es.tsd.mapreduce.words.orderby;
 import java.io.IOException;
 
 import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 
 /**
@@ -11,7 +12,7 @@ import org.apache.hadoop.mapreduce.Reducer;
  * @author armandosoaressousa
  *
  */
-public class WordSizeReducerTask  extends Reducer<MyWord,IntWritable,MyWord,IntWritable> {
+public class WordSizeReducerTask  extends Reducer<MyWord,IntWritable,Text,IntWritable> {
     private IntWritable result = new IntWritable();
 
     public void reduce(MyWord key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
@@ -20,6 +21,6 @@ public class WordSizeReducerTask  extends Reducer<MyWord,IntWritable,MyWord,IntW
         size = val.get();
       }
       result.set(size);
-      context.write(key, result);
+      context.write(key.getFname(), result);
     }
   }
