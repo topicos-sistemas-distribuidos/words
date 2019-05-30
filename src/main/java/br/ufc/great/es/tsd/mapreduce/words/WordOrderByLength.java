@@ -36,13 +36,15 @@ public class WordOrderByLength {
 	    job.setInputFormatClass(KeyValueTextInputFormat.class);
 		job.setMapOutputKeyClass(MyWord.class);
 		job.setMapOutputValueClass(IntWritable.class);
-			    
+
+		job.setOutputKeyClass(Text.class);
+		job.setOutputValueClass(IntWritable.class);
+		
 		job.setPartitionerClass(WordPartitioner.class);
 		job.setSortComparatorClass(WordSortingComparator.class);
 		job.setGroupingComparatorClass(MyWordGroupingComparator.class);
 
-		job.setOutputKeyClass(Text.class);
-		job.setOutputValueClass(IntWritable.class);
+
 		
 		job.setNumReduceTasks(2);
 
