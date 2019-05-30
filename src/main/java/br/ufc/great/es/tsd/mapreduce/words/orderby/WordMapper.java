@@ -12,7 +12,7 @@ import org.apache.hadoop.mapreduce.Mapper;
  * @author armandosoaressousa
  *
  */
-public class WordMapper extends Mapper<Object, Text, MyWord, IntWritable>{
+public class WordMapper extends Mapper<Object, Text, Text, IntWritable>{
 	private final static IntWritable one = new IntWritable(1);
 	private Text word = new Text();
 
@@ -30,7 +30,7 @@ public class WordMapper extends Mapper<Object, Text, MyWord, IntWritable>{
 
 			w.setFword(word);
 			w.setLsize(one);
-			context.write(w, w.getLsize());		
+			context.write(w.getFname(), w.getLsize());		
 		}
 	}
 

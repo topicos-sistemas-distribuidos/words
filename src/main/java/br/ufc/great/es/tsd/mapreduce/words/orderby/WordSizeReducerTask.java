@@ -12,15 +12,15 @@ import org.apache.hadoop.mapreduce.Reducer;
  * @author armandosoaressousa
  *
  */
-public class WordSizeReducerTask  extends Reducer<MyWord,IntWritable,Text,IntWritable> {
+public class WordSizeReducerTask  extends Reducer<Text,IntWritable,Text,IntWritable> {
     private IntWritable result = new IntWritable();
 
-    public void reduce(MyWord key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
+    public void reduce(Text key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
       int size = 0;
       for (IntWritable val : values) {
         size = val.get();
       }
       result.set(size);
-      context.write(key.getFname(), result);
+      context.write(key, result);
     }
   }
