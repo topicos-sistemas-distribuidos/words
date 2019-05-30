@@ -8,6 +8,7 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
+import org.apache.hadoop.mapreduce.lib.input.KeyValueTextInputFormat;
 
 import br.ufc.great.es.tsd.mapreduce.words.orderby.MyWord;
 import br.ufc.great.es.tsd.mapreduce.words.orderby.MyWordGroupingComparator;
@@ -32,12 +33,18 @@ public class WordOrderByLength {
 	    job.setCombinerClass(WordSizeReducerTask.class);
 	    job.setReducerClass(WordSizeReducerTask.class);
 
+	    job.setInputFormatClass(KeyValueTextInputFormat.class);
+		job.setMapOutputKeyClass(MyWord.class);
+		job.setMapOutputValueClass(IntWritable.class);
+		
+		job.setOutputKeyClass(Text.class);
+		job.setOutputValueClass(IntWritable.class);
+	    
 		job.setPartitionerClass(WordPartitioner.class);
 		job.setSortComparatorClass(WordSortingComparator.class);
 		job.setGroupingComparatorClass(MyWordGroupingComparator.class);
 
-		job.setOutputKeyClass(Text.class);
-		job.setOutputValueClass(IntWritable.class);
+
 		
 		job.setNumReduceTasks(2);
 

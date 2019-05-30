@@ -30,7 +30,7 @@ public class WordMapper extends Mapper<Object, Text, MyWord, IntWritable>{
 
 			w.setFword(word);
 			w.setLsize(one);
-			context.write(w, one);		
+			context.write(w, w.getLsize());		
 		}
 	}
 
