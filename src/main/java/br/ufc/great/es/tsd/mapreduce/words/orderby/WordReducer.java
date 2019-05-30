@@ -10,9 +10,9 @@ public class WordReducer extends Reducer<MyWord, IntWritable, MyWord, IntWritabl
 
 	public void reduce(MyWord key, Iterable<IntWritable> value, Context context) throws IOException, InterruptedException{
 		for(IntWritable lsize:value){
-		context.write(key, lsize);
-	}
+			context.write(key, lsize);
+		}
 
-}
+	}
 
 }

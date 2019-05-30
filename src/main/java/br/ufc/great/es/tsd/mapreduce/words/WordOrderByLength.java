@@ -12,7 +12,6 @@ import org.apache.hadoop.util.GenericOptionsParser;
 
 import br.ufc.great.es.tsd.mapreduce.words.orderby.MyWord;
 import br.ufc.great.es.tsd.mapreduce.words.orderby.MyWordGroupingComparator;
-import br.ufc.great.es.tsd.mapreduce.words.orderby.TokenizerMapper;
 import br.ufc.great.es.tsd.mapreduce.words.orderby.WordMapper;
 import br.ufc.great.es.tsd.mapreduce.words.orderby.WordPartitioner;
 import br.ufc.great.es.tsd.mapreduce.words.orderby.WordReducer;
@@ -32,14 +31,9 @@ public class WordOrderByLength {
 		Job job = Job.getInstance(conf, "word sort");
 		job.setJarByClass(WordOrderByLength.class);
 
-		job.setMapperClass(TokenizerMapper.class);
+		job.setMapperClass(WordMapper.class);
 	    job.setCombinerClass(WordSizeReducerTask.class);
 	    job.setReducerClass(WordSizeReducerTask.class);
-	    
-	    job.getConfiguration().set("key.value.separator.in.input.line", ",");
-	    job.setMapperClass(WordMapper.class);
-		
-		job.setReducerClass(WordReducer.class);
 
 		job.setInputFormatClass(KeyValueTextInputFormat.class);
 		job.setMapOutputKeyClass(MyWord.class);
