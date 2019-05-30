@@ -49,13 +49,20 @@ public class WordLengthSimple {
 	        
 	      }
 	      
+	    	for (Text t : topN.values()) {
+	    		context.write(NullWritable.get(), t);
+	    	}
+	      
 	    }
 	    
+	    /*
+	    @Override
 	    protected void cleanup(Context context) throws IOException, InterruptedException{
 	    	for (Text t : topN.values()) {
 	    		context.write(NullWritable.get(), t);
 	    	}
 	    }
+	    */
 	    
 	  }
 	  
@@ -93,7 +100,7 @@ public class WordLengthSimple {
 			job.setMapperClass(TokenizerMapper.class);
 		    job.setCombinerClass(WordSizeReducerTask.class);
 		    job.setReducerClass(WordSizeReducerTask.class);
-			job.setOutputKeyClass(IntWritable.class);
+			job.setOutputKeyClass(NullWritable.class);
 			job.setOutputValueClass(Text.class);
 
 			for (int i = 0; i < otherArgs.length - 1; ++i) {
