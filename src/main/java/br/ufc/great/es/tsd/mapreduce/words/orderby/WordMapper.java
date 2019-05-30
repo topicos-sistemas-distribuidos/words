@@ -11,7 +11,7 @@ import org.apache.hadoop.mapreduce.Mapper;
  * @author armandosoaressousa
  *
  */
-public class WordMapper extends Mapper<Text, IntWritable, MyWord, IntWritable>{
+public class WordMapper extends Mapper<Object, Text, MyWord, IntWritable>{
 
 	MyWord w = new MyWord();
 	public void map(Text fWord, IntWritable lSize, Context context) throws IOException, InterruptedException{
